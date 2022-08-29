@@ -1,0 +1,192 @@
+---
+title: "Linkin Park"
+author: "Thomas Da Dalt"
+output:
+  ioslides_presentation:
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library("tidyverse")
+library("knitr")
+library("dplyr")
+library("linkinpark",warn.conflicts = FALSE)
+library("ggplot2")
+
+```
+
+## Modifiche Apportate 1
+```{r, echo=FALSE}
+t2020 = audio_features %>%
+  filter(album_release_year == "2020") %>%
+  select(album_release_date,album_name,artist_name)
+
+ggplot(data = t2020) +
+  geom_point(mapping = aes(x = album_release_date, y = album_name, fill = artist_name),color = "dark blue") +
+  scale_x_discrete(guide = guide_axis(angle = 90))
+#Tale dataset include sia tutti gli album creati dai linkin park che non, ogni album però possiede almeno una track (canzone) dei lp ---> valori corrispondenti a questi brani, quindi circa tutti i brani visualizzati dal 2018 in su si basano su canzoni anche non dei lp
+#Problema del dataset proveniente da spotify
+``` 
+
+## Modifiche Apportate 2
+```{r, echo=FALSE}
+t2020 = audio_features %>%
+  filter(album_release_year == "2017") %>%
+  select(album_release_date,album_name,artist_name)
+
+ggplot(data = t2020) +
+  geom_point(mapping = aes(x = album_release_date, y = album_name, fill = artist_name), color = "dark red") +
+  scale_x_discrete(guide = guide_axis(angle = 90))
+##Linkin Park - My December.mp3 --> all'interno delle 100 greatest ... ever ovvero viene preso l'album che contiene ALMENO una track dei linkin park, questo è visibile anche negli anni precedenti / successivi
+``` 
+  
+## Modifiche Apportate 3
+```{r, echo=FALSE}
+audio2 = audio_features %>%
+  filter(album_release_year > 2016)
+
+ggplot(data = audio2) +
+  geom_point(mapping = aes(x = energy, y = album_release_year), alpha = 0.2, color = "red")
+``` 
+  
+## capitolo 1.1 _ Spotify
+```{r, echo=FALSE}
+audio = audio_features %>%
+  filter(album_release_year < 2018)
+
+ggplot(data = audio) +
+  geom_point(mapping = aes(x = energy, y = album_release_year), alpha = 0.2, color = "red")
+```
+
+
+## Capitolo 1.2
+```{r, echo=FALSE}
+ggplot(data = audio) +
+  geom_point(mapping = aes(x = speechiness , y = album_release_year), alpha = 0.2, color = "dark green")
+```
+
+
+## Capitolo 1.3
+```{r, echo=FALSE}
+ggplot(data = audio) +
+  geom_point(mapping = aes(x = danceability, y = album_release_year), alpha = 0.2, color = "blue")
+```
+
+
+## Capitolo 1.4
+```{r, echo=FALSE}
+ggplot(data = audio) +
+  geom_point(mapping = aes(x = acousticness, y = album_release_year), alpha = 0.2, color = "orange")
+```
+
+
+## Capitolo 1.5
+```{r, echo=FALSE}
+ggplot(data = audio) +
+  geom_point(mapping = aes(x = valence, y = album_release_year), alpha = 0.2, color = "brown")
+```
+
+
+## Capitolo 1.6
+```{r, echo=FALSE}
+ggplot(data = audio) +
+  geom_point(mapping = aes(x = loudness, y = album_release_year), alpha = 0.2, color = "purple")
+```
+
+
+## Capitolo 1.7
+```{r, echo=FALSE}
+ggplot(data = audio) +
+  geom_point(mapping = aes(x = instrumentalness, y = album_release_year), alpha = 0.2, color = "#56B4E9")
+```
+
+## Capitolo 1.8
+```{r, echo=FALSE}
+ggplot(data = audio) +
+  geom_point(mapping = aes(x = liveness, y = album_release_year), alpha = 0.2, color = "#CC79A7")
+```
+
+## Capitolo 2.1 _ RIAA
+```{r, echo=FALSE}
+ggplot(data = riaa_lp) +
+  geom_point(mapping = aes(x = release_date ,y = album_title, color = certification))
+```
+
+## Capitolo 2.2
+```{r, echo=FALSE}
+ggplot(data = riaa_lp) +
+  geom_point(mapping = aes(x = release_date ,y = certification_date , color = certification))
+
+```
+
+## Capitolo 2.3
+```{r, echo=FALSE}
+riaa = riaa_lp %>%
+  filter(certification == "Platinum")%>%
+  select(release_date,album_title,plat_modifier)
+
+ggplot(data = riaa) +
+  geom_point(mapping = aes(x = release_date ,y = album_title, color = plat_modifier)) +
+  scale_color_gradient(low = "lightgrey", high = "purple") 
+```
+
+
+
+## Capitolo 3.1.1 _ BILLBOARD _ ALBUM
+```{r, echo=FALSE}
+ggplot(data = billboard_albums) +
+  geom_point(mapping = aes(x =date_peaked, y = album_title), color = "green")+
+  scale_x_discrete(guide = guide_axis(angle = 90))
+```
+
+## Capitolo 3.1.2
+```{r, echo=FALSE}
+ggplot(data = billboard_albums) + 
+  geom_bar(mapping = aes(x = weeks_on_chart, fill = album_title))
+```
+
+## Capitolo 3.1.3
+```{r, echo=FALSE}
+ggplot(data = billboard_albums) + 
+  geom_bar(mapping = aes(x = peak_position, fill = album_title))+
+  scale_fill_discrete(name="Titolo Album")
+  
+```
+
+## Capitolo 3.1.4
+```{r, echo=FALSE}
+ggplot(data = billboard_albums,mapping = aes(x = weeks_on_chart,y = peak_position)) + 
+  geom_point() +
+  geom_smooth(method = "loess", formula = y ~ x)
+```
+
+## Capitolo 3.2.1 _ BILLBOARD _ TRACKS
+```{r, echo=FALSE}
+ggplot(data = billboard_songs) +
+  geom_point(mapping = aes(x = date_peaked, y = trackname), color = "blue") +
+  scale_x_discrete(guide = guide_axis(angle = 90))
+```
+
+## Capitolo 3.2.2
+```{r, echo=FALSE}
+ggplot(data = billboard_songs) +
+  geom_point(mapping = aes(x = peak_position, y = trackname), color = "brown")
+```
+
+## Capitolo 3.2.3
+```{r, echo=FALSE}
+ggplot(data = billboard_songs) + 
+  geom_bar(mapping = aes(x = weeks_on_chart, fill=trackname))
+```
+
+## Capitolo 3.2.4
+```{r, echo=FALSE}
+ggplot(data = billboard_songs,mapping = aes(x = weeks_on_chart,y = peak_position)) + 
+  geom_point() +
+  geom_smooth(method = "loess", formula = y ~ x)
+```
+
+
