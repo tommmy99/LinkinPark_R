@@ -1,0 +1,7 @@
+Per scaricare il dataset utilizzare il seguente comando su rsrudio:
+
+"remotes::install_github('delabj/linkinpark')"
+
+con la libreria:
+
+library("linkinpark")
