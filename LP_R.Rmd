@@ -18,7 +18,7 @@ library("ggplot2")
 
 ```
 
-## Modifiche Apportate 1
+## Capitolo 0.1 _ Artist_name su SPOTIFY
 ```{r, echo=FALSE}
 t2020 = audio_features %>%
   filter(album_release_year == "2020") %>%
@@ -31,7 +31,7 @@ ggplot(data = t2020) +
 #Problema del dataset proveniente da spotify
 ``` 
 
-## Modifiche Apportate 2
+## Capitolo 0.2
 ```{r, echo=FALSE}
 t2020 = audio_features %>%
   filter(album_release_year == "2017") %>%
@@ -43,7 +43,7 @@ ggplot(data = t2020) +
 ##Linkin Park - My December.mp3 --> all'interno delle 100 greatest ... ever ovvero viene preso l'album che contiene ALMENO una track dei linkin park, questo è visibile anche negli anni precedenti / successivi
 ``` 
   
-## Modifiche Apportate 3
+## Capitolo 0.3
 ```{r, echo=FALSE}
 audio2 = audio_features %>%
   filter(album_release_year > 2016)
