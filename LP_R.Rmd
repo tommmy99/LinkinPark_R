@@ -2,15 +2,20 @@
 title: "Linkin Park"
 author: "Thomas Da Dalt"
 output:
-  ioslides_presentation:
-editor_options: 
+  ioslides_presentation: null
+  slidy_presentation: default
+  beamer_presentation: default
+editor_options:
   chunk_output_type: inline
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
+library("wesanderson")
+library("ggrepel")          # Install ggrepel package
 library("tidyverse")
+library("gt")
 library("knitr")
 library("dplyr")
 library("linkinpark",warn.conflicts = FALSE)
@@ -18,7 +23,7 @@ library("ggplot2")
 
 ```
 
-## Capitolo 0.1 _ Artist_name su SPOTIFY
+## Piccoli Accorgimenti 1
 ```{r, echo=FALSE}
 t2020 = audio_features %>%
   filter(album_release_year == "2020") %>%
@@ -31,7 +36,7 @@ ggplot(data = t2020) +
 #Problema del dataset proveniente da spotify
 ``` 
 
-## Capitolo 0.2
+## Piccoli accorgimenti 2
 ```{r, echo=FALSE}
 t2020 = audio_features %>%
   filter(album_release_year == "2017") %>%
@@ -40,25 +45,19 @@ t2020 = audio_features %>%
 ggplot(data = t2020) +
   geom_point(mapping = aes(x = album_release_date, y = album_name, fill = artist_name), color = "dark red") +
   scale_x_discrete(guide = guide_axis(angle = 90))
+
 ##Linkin Park - My December.mp3 --> all'interno delle 100 greatest ... ever ovvero viene preso l'album che contiene ALMENO una track dei linkin park, questo è visibile anche negli anni precedenti / successivi
 ``` 
   
-## Capitolo 0.3
-```{r, echo=FALSE}
-audio2 = audio_features %>%
-  filter(album_release_year > 2016)
-
-ggplot(data = audio2) +
-  geom_point(mapping = aes(x = energy, y = album_release_year), alpha = 0.2, color = "red")
-``` 
-  
-## capitolo 1.1 _ Spotify
+## Spotify Song Attributes : Energy
+Energy : misura percettiva di intensità e attività
 ```{r, echo=FALSE}
 audio = audio_features %>%
   filter(album_release_year < 2018)
 
 ggplot(data = audio) +
   geom_point(mapping = aes(x = energy, y = album_release_year), alpha = 0.2, color = "red")
+#misura da 0.0 a 1.0 e rappresenta una misura percettiva di intensità e attività.In genere le tracce energetiche sembrano veloci, rumorose e "disturbanti". Ad esempio il death metal possiede una energia elevata mentre un preludio di bach un punteggio molto basso.
 ```
 
 
