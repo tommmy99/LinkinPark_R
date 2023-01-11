@@ -54,134 +54,155 @@ Energy : misura percettiva di intensità e attività
 ```{r, echo=FALSE}
 audio = audio_features %>%
   filter(album_release_year < 2018)
-
+  
 ggplot(data = audio) +
   geom_point(mapping = aes(x = energy, y = album_release_year), alpha = 0.2, color = "red")
 #misura da 0.0 a 1.0 e rappresenta una misura percettiva di intensità e attività.In genere le tracce energetiche sembrano veloci, rumorose e "disturbanti". Ad esempio il death metal possiede una energia elevata mentre un preludio di bach un punteggio molto basso.
 ```
 
 
-## Capitolo 1.2
+## Spotify Song Attributes : Speechiness
+Speechiness: Presenza di vocalità in una canzone 
 ```{r, echo=FALSE}
 ggplot(data = audio) +
   geom_point(mapping = aes(x = speechiness , y = album_release_year), alpha = 0.2, color = "dark green")
+#speechiness--> Rileva la presenza di parole pronunciate in una traccia (se la vocalità di una canzone è superiore a 0,66 allora è probabilmente composta da parole pronuncate, compreso tra 0,33 e 0,66 è una canzone che può contenere sia musica che parole e un punteggio inferiore a 0,33 significa che la canzone non ha alcun parlato)
 ```
 
 
-## Capitolo 1.3
+## Spotify Song Attributes : Danceability
+Danceability: Quanto è adatta una traccia per ballare (combinazione tempo e stabilità del ritmo)
 ```{r, echo=FALSE}
 ggplot(data = audio) +
   geom_point(mapping = aes(x = danceability, y = album_release_year), alpha = 0.2, color = "blue")
+#descrive quanto è adatta una traccia per ballare sulla base di una combinazione di elementi musicali tra cui tempo, stabilità del ritmo e forza del ritmo 
 ```
 
 
-## Capitolo 1.4
+## Spotify Song Attributes : Acousticness
+Acousticness : Descrive quanta acustica possiede una canzone
 ```{r, echo=FALSE}
 ggplot(data = audio) +
   geom_point(mapping = aes(x = acousticness, y = album_release_year), alpha = 0.2, color = "orange")
+#Descrive quanta acustica possiede una canzone : un punteggio pari a 1.0 indica che è molto acustica (ovvero creando musica che utilizza solo o principalmente mezzi acustici anzichè elettrici o elettronici) 
 ```
 
 
-## Capitolo 1.5
+## Spotify Song Attributes : Valence
+Valence: Positività musicale trasmessa da un brano 
 ```{r, echo=FALSE}
 ggplot(data = audio) +
   geom_point(mapping = aes(x = valence, y = album_release_year), alpha = 0.2, color = "brown")
+#Descrive la positività musicale trasmessa da un brano. I brani con alta valenza suonano più positivi (trasmettono felicità, allegria,...) mentre i brani con valenza bassa suonano più negativi (trasmettono tristezza, ...)
 ```
 
 
-## Capitolo 1.6
+## Spotify Song Attributes : Loudness 
 ```{r, echo=FALSE}
 ggplot(data = audio) +
   geom_point(mapping = aes(x = loudness, y = album_release_year), alpha = 0.2, color = "purple")
+#Intensità del suono nei grafici 
 ```
 
 
-## Capitolo 1.7
+## Spotify Song Attributes : Instrumentalness
+Instrumentalness : Quantità di vocale utilizzato in una canzone
 ```{r, echo=FALSE}
 ggplot(data = audio) +
   geom_point(mapping = aes(x = instrumentalness, y = album_release_year), alpha = 0.2, color = "#56B4E9")
+#Rappresenta la quantità di voci nella canzone. Più si avvicina a 1.0 più la canzone è strumentale.
 ```
 
-## Capitolo 1.8
+
+## Spotify Song Attributes : Liveness
+Liveness : Probabilità che la canzone sia stata registrata in live
 ```{r, echo=FALSE}
 ggplot(data = audio) +
   geom_point(mapping = aes(x = liveness, y = album_release_year), alpha = 0.2, color = "#CC79A7")
+#Valore che descrive la probabilità che la canzone sia stata registrata in live. Accordandosi con la documentazione ufficiale un valore superiore a 0.8 significa che certamente sia stata cantata in live
 ```
 
-## Capitolo 2.1 _ RIAA
+## RIAA : Song Cerifications
 ```{r, echo=FALSE}
 ggplot(data = riaa_lp) +
   geom_point(mapping = aes(x = release_date ,y = album_title, color = certification))
 ```
 
-## Capitolo 2.2
+
+## RIAA : Certifications Date
 ```{r, echo=FALSE}
 ggplot(data = riaa_lp) +
   geom_point(mapping = aes(x = release_date ,y = certification_date , color = certification))
-
 ```
 
-## Capitolo 2.3
+
+## RIAA : Platinum Modifier
 ```{r, echo=FALSE}
+#Prima di consegnare cambiare le sfumature con i pallini di grandezza
 riaa = riaa_lp %>%
   filter(certification == "Platinum")%>%
   select(release_date,album_title,plat_modifier)
 
 ggplot(data = riaa) +
-  geom_point(mapping = aes(x = release_date ,y = album_title, color = plat_modifier)) +
-  scale_color_gradient(low = "lightgrey", high = "purple") 
+  geom_point(mapping = aes(x = release_date ,y = album_title, size = plat_modifier),color = "violet")
 ```
 
 
+## BILLBOARD : Albums Date Peaked
+peak_position : posizione più alta che un album ha raggiunto durante la sua permanenza nelle classifiche
 
-## Capitolo 3.1.1 _ BILLBOARD _ ALBUM
 ```{r, echo=FALSE}
+#Vedere se al posto del colore verde si riesce ad inserire le peak position
+#Date_Peaked : Data in cui l'album ha raggiunto la posizione più alta durante la sua permanenza nelle classifiche
 ggplot(data = billboard_albums) +
-  geom_point(mapping = aes(x =date_peaked, y = album_title), color = "green")+
+  geom_point(mapping = aes(x =date_peaked, y = album_title,size = peak_position),color = "red")+
   scale_x_discrete(guide = guide_axis(angle = 90))
 ```
 
-## Capitolo 3.1.2
+
+## BILLBOARD : Albums Weeks on chart
+Weeks_on_chart : numero di settimane in cui l'album è rimasto all'interno della classifica
 ```{r, echo=FALSE}
 ggplot(data = billboard_albums) + 
   geom_bar(mapping = aes(x = weeks_on_chart, fill = album_title))
+#Presenti più di uno significa semplicemente che è uscito e rientrato
 ```
 
-## Capitolo 3.1.3
+
+## BILLBOARD : Albums Peak Position
 ```{r, echo=FALSE}
 ggplot(data = billboard_albums) + 
   geom_bar(mapping = aes(x = peak_position, fill = album_title))+
   scale_fill_discrete(name="Titolo Album")
-  
 ```
 
-## Capitolo 3.1.4
+## BILLBOARD : Albums Position Trend
 ```{r, echo=FALSE}
 ggplot(data = billboard_albums,mapping = aes(x = weeks_on_chart,y = peak_position)) + 
   geom_point() +
   geom_smooth(method = "loess", formula = y ~ x)
 ```
 
-## Capitolo 3.2.1 _ BILLBOARD _ TRACKS
+## BILLBOARD : Songs Date Peaked
 ```{r, echo=FALSE}
 ggplot(data = billboard_songs) +
-  geom_point(mapping = aes(x = date_peaked, y = trackname), color = "blue") +
+  geom_point(mapping = aes(x = date_peaked, y = trackname ,size=peak_position), color = "blue") +
   scale_x_discrete(guide = guide_axis(angle = 90))
 ```
 
-## Capitolo 3.2.2
+## BILLBOARD : Songs Peak Position
 ```{r, echo=FALSE}
 ggplot(data = billboard_songs) +
-  geom_point(mapping = aes(x = peak_position, y = trackname), color = "brown")
+  geom_bar(mapping = aes(x = peak_position, fill = trackname))
 ```
 
-## Capitolo 3.2.3
+## BILLBOARD : Songs Weeks on chart
 ```{r, echo=FALSE}
 ggplot(data = billboard_songs) + 
   geom_bar(mapping = aes(x = weeks_on_chart, fill=trackname))
 ```
 
-## Capitolo 3.2.4
+## BILLBOARD : Songs position trend
 ```{r, echo=FALSE}
 ggplot(data = billboard_songs,mapping = aes(x = weeks_on_chart,y = peak_position)) + 
   geom_point() +
